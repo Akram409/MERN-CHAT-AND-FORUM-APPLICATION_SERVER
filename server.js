@@ -39,6 +39,7 @@ app.use(express.json()); // to parse the incoming requests with JSON payloads (f
 app.use(
   cors({
     origin: "*", // Replace with your deployed frontend URL
+    credentials: true,
   })
 );
 app.use(cookieParser());
