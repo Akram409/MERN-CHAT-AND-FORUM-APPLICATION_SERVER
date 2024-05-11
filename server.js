@@ -2,6 +2,7 @@ import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import express from "express";
 import path from "path";
+const cors = require("cors");
 
 import mongoose from "mongoose";
 import morgan from "morgan";
@@ -36,6 +37,11 @@ mongoose
   });
 
 app.use(express.json()); // to parse the incoming requests with JSON payloads (from req.body)
+app.use(
+  cors({
+    origin: "*", // Replace with your deployed frontend URL
+  })
+);
 app.use(cookieParser());
 
 app.use(morgan("dev"));
