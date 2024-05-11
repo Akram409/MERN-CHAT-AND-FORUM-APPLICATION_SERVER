@@ -2,10 +2,9 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
-import path from "path";
-
 import mongoose from "mongoose";
 import morgan from "morgan";
+import path from "path";
 import authRoutes from "./routes/auth.routes.js";
 import fileRouter from "./routes/file.routes.js"; // Adjust the path to match your file
 import messageRoutes from "./routes/message.routes.js";
