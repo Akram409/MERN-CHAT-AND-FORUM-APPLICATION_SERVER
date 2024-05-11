@@ -41,6 +41,7 @@ app.use(
     origin: [
       "https://mern-chat-and-forum-app-frontend.onrender.com",
       "http://localhost:3000",
+      "https://chat-and-fourm.netlify.app",
     ], // Replace with your deployed frontend URL
     credentials: true,
   })

@@ -7,7 +7,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: ["https://mern-chat-and-forum-app-frontend.onrender.com"],
+    origin: ["https://chat-and-fourm.netlify.app"],
     methods: ["GET", "POST"],
   },
 });
