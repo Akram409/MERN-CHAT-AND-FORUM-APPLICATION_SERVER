@@ -1,8 +1,8 @@
 import cookieParser from "cookie-parser";
+import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
 import path from "path";
-const cors = require("cors");
 
 import mongoose from "mongoose";
 import morgan from "morgan";
