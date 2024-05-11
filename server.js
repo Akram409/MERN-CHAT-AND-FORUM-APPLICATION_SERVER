@@ -38,7 +38,10 @@ mongoose
 app.use(express.json()); // to parse the incoming requests with JSON payloads (from req.body)
 app.use(
   cors({
-    origin: "*", // Replace with your deployed frontend URL
+    origin: [
+      "https://mern-chat-and-forum-app-frontend.onrender.com",
+      "http://localhost:3000",
+    ], // Replace with your deployed frontend URL
     credentials: true,
   })
 );
