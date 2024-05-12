@@ -56,6 +56,10 @@ app.use("/api/users", userRoutes);
 app.use("/api", fileRouter);
 app.use("/api/community/topics", topicRoutes);
 
+app.use("/", (req, res) =>
+  res.status(200).json({ success: true, msg: "server is running" })
+);
+
 app.use(express.static(path.join(__dirname, "/frontend/dist")));
 
 app.get("*", (req, res) => {
