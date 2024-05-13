@@ -4,13 +4,13 @@ import dotenv from "dotenv";
 import express from "express";
 import morgan from "morgan";
 import path from "path";
+import connectDB from "./db/connectToMongoDB.js";
 import authRoutes from "./routes/auth.routes.js";
 import fileRouter from "./routes/file.routes.js"; // Adjust the path to match your file
 import messageRoutes from "./routes/message.routes.js";
 import topicRoutes from "./routes/topic.routes.js";
 import userRoutes from "./routes/user.routes.js";
 import { app, server } from "./socket/socket.js";
-import connectDB from "./db/connectToMongoDB.js";
 
 const PORT = process.env.PORT || 5000;
 
@@ -44,7 +44,7 @@ app.use(
       "https://mern-chat-and-forum-app-frontend.onrender.com",
       "http://localhost:3000",
       "https://chat-and-fourm.netlify.app",
-      "https://mern-chat-and-forum-app-frontend.vercel.app/",
+      "https://mern-chat-and-forum-app-frontend.vercel.app",
     ], // Replace with your deployed frontend URL
     credentials: true,
   })
