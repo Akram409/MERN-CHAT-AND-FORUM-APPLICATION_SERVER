@@ -1,3 +1,5 @@
+import Topic from "../models/topic.model.js";
+import TopicComment from "../models/topicComment.model.js";
 import User from "../models/user.model.js";
 
 export const getUsersForSidebar = async (req, res) => {
@@ -73,5 +75,39 @@ export const handleProfileUpdate = async (req, res) => {
     return res
       .status(500)
       .json({ success: false, msg: "Error updating profile" });
+  }
+};
+
+export const deleteAccount = async (req, res) => {
+  try {
+    const loggedInUserId = req.user._id;
+    // Step 1: Find all topics authored by the user
+    const topics = await Topic.find({ "author._id": loggedInUserId });
+
+    // Step 2: Find all comments authored by the user
+    const comments = await TopicComment.find({ "author._id": loggedInUserId });
+
+    // Step 3: Delete all comments associated with the found topics
+    await Promise.all(
+      topics.map(async (topic) => {
+        await TopicComment.deleteMany({ topicId: topic._id });
+      })
+    );
+
+    // Step 4: Delete all topics authored by the user
+    await Topic.deleteMany({ "author._id": loggedInUserId });
+
+    // Step 5: Finally, delete the user itself (You need to implement this part according to your user model)
+    await User.deleteOne({ _id: loggedInUserId });
+
+    // Respond with success message
+    res.clearCookie("jwt");
+    res.status(200).json({
+      success: true,
+      msg: "Account and associated data deleted successfully",
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, msg: "Internal Server Error" });
   }
 };
