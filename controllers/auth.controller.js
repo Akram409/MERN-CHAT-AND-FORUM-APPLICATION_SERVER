@@ -100,7 +100,7 @@ export const updatePass = async (req, res) => {
     if (!isOldPasswordValid) {
       return res
         .status(401)
-        .json({ success: false, msg: "Your Old Password did not" });
+        .json({ success: false, msg: "Your Old Password did not matched" });
     }
 
     // Hash the new password
