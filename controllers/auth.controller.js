@@ -83,10 +83,8 @@ export const login = async (req, res) => {
 };
 
 export const updatePass = async (req, res) => {
-  console.log("🚀 ~ updatePass ~ req:", req.body.oldPassword);
   try {
     const loggedInUser = req.user;
-    console.log("🚀 ~ updatePass ~ loggedInUser:", loggedInUser);
     // res.cookie("jwt", "", { maxAge: 0 });
 
     const user = await User.findById(loggedInUser._id); // Fetch hashed password from the database

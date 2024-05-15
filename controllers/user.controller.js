@@ -32,8 +32,16 @@ export const getUser = async (req, res) => {
 export const handleProfileUpdate = async (req, res) => {
   const { user } = req; // Access the logged-in user from req.user
   console.log("🚀 ~ handleProfileUpdate ~ user:", user);
-  const { fullName, username, gender, password, profilePic } = req.body;
-  console.log("🚀 ~ handleProfileUpdate ~ profilePic:", profilePic);
+  const {
+    fullName,
+    username,
+    gender,
+    profilePic,
+    designation,
+    DateOfBirth,
+    contactAddress,
+    phoneNumber,
+  } = req.body;
 
   try {
     const updatedUser = await User.findOneAndUpdate(
@@ -42,16 +50,17 @@ export const handleProfileUpdate = async (req, res) => {
         fullName,
         username,
         gender,
-        profilePic, // Update profilePic if present
+        profilePic,
+        designation,
+        DateOfBirth,
+        contactAddress,
+        phoneNumber,
       },
       { new: true } // Return the updated document
     );
 
     if (!updatedUser) {
       return res.status(404).json({ success: false, msg: "User not found" });
-    }
-
-    if (password) {
     }
 
     res.status(200).json({

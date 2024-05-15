@@ -28,20 +28,21 @@ const userSchema = new mongoose.Schema(
     designation: {
       type: String,
     },
+    DateOfBirth: {
+      type: Date,
+    },
+    phoneNumber: {
+      type: String,
+    },
+    contactAddress: {
+      type: String,
+    },
     bookmarks: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Topic",
       },
     ],
-
-    // profilePicture: {
-    // type: String,
-    // default:
-    // 	'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
-    // },
-
-    // createdAt, updatedAt => Member since <createdAt>
   },
   { timestamps: true }
 );
