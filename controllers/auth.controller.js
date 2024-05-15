@@ -82,9 +82,47 @@ export const login = async (req, res) => {
   }
 };
 
+export const updatePass = async (req, res) => {
+  console.log("🚀 ~ updatePass ~ req:", req.body.oldPassword);
+  try {
+    const loggedInUser = req.user;
+    console.log("🚀 ~ updatePass ~ loggedInUser:", loggedInUser);
+    // res.cookie("jwt", "", { maxAge: 0 });
+
+    const user = await User.findById(loggedInUser._id); // Fetch hashed password from the database
+    const hashedPasswordFromDB = user.password;
+    // Compare the old password provided by the user with the hashed password from the database
+    const isOldPasswordValid = await bcrypt.compare(
+      req.body.oldPassword,
+      hashedPasswordFromDB
+    );
+
+    if (!isOldPasswordValid) {
+      return res
+        .status(401)
+        .json({ success: false, msg: "Your Old Password did not" });
+    }
+
+    // Hash the new password
+    const salt = await bcrypt.genSalt(10);
+    const hashedNewPassword = await bcrypt.hash(req.body.newPassword, salt);
+    user.password = hashedNewPassword;
+    await user.save();
+    // Update the hashed password in the database
+    // Example: Update hashedNewPassword in the database for the user
+    res.clearCookie("jwt");
+    res
+      .status(200)
+      .json({ success: true, message: "Password Changed successfully" });
+  } catch (error) {
+    console.log("Error in logout controller", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 export const logout = (req, res) => {
   try {
-    res.cookie("jwt", "", { maxAge: 0 });
+    res.clearCookie("jwt");
     res.status(200).json({ message: "Logged out successfully" });
   } catch (error) {
     console.log("Error in logout controller", error.message);
