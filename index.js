@@ -10,12 +10,12 @@ import fileRouter from "./routes/file.routes.js"; // Adjust the path to match yo
 import messageRoutes from "./routes/message.routes.js";
 import topicRoutes from "./routes/topic.routes.js";
 import userRoutes from "./routes/user.routes.js";
+import galleryRoutes from "./routes/gallery.routes.js";
 import { app, server } from "./socket/socket.js";
 
 const PORT = process.env.PORT || 5000;
-
+app.use('/uploads', express.static('uploads'));
 const __dirname = path.resolve();
-
 dotenv.config();
 
 // database config
@@ -58,6 +58,7 @@ app.use("/api/messages", messageRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api", fileRouter);
 app.use("/api/community/topics", topicRoutes);
+app.use("/api/community/gallery", galleryRoutes);
 
 app.use("/", (req, res) =>
   res.status(200).json({ success: true, msg: "server is running" })
