@@ -8,7 +8,21 @@ const gallerySchema = new mongoose.Schema(
     },
     image: {
       type: String,
-      required: true,
+      validate: {
+        validator: function (v) {
+          return v != null || this.video != null;
+        },
+        message: 'Either image or video must be provided.'
+      }
+    },
+    video: {
+      type: String,
+      validate: {
+        validator: function (v) {
+          return v != null || this.image != null;
+        },
+        message: 'Either image or video must be provided.'
+      }
     },
     description: {
       type: String,

@@ -49,3 +49,27 @@ export const uploadImage = async (req, res) => {
     res.status(500).json({ error: "Internal server error." });
   }
 };
+export const uploadVideo = async (req, res) => {
+  try {
+    const {description} = req.body;
+    const userId = req.params.id;
+    const file = req.file;
+  
+    if (!file) {
+      return res.status(400).json({ error: "No file uploaded." });
+    }
+    const path = "http://localhost:5000/uploads/videos/"
+    const newData ={
+      userId,
+      video: path+file.filename,
+      description: description
+    }
+    
+    const newGalleryEntry = new Gallery(newData);
+    await newGalleryEntry.save();
+    res.status(201).json({ success: true, data: newGalleryEntry });
+  } catch (error) {
+    console.error("Error uploading image:", error);
+    res.status(500).json({ error: "Internal server error." });
+  }
+};
