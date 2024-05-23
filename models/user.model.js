@@ -43,6 +43,18 @@ const userSchema = new mongoose.Schema(
         ref: "Topic",
       },
     ],
+    lastMessage: {
+      type: String,
+      default: null,
+    },
+    sender: {
+      type: String,
+      default: null
+    },
+    messageSendTime: {
+      type: Date,
+      default: null
+    },
   },
   { timestamps: true }
 );

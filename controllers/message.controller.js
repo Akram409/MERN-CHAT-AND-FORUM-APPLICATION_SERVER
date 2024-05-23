@@ -71,6 +71,7 @@
 import multer from "multer";
 import Conversation from "../models/conversation.model.js";
 import Message from "../models/message.model.js";
+import User from "../models/user.model.js";
 import { getReceiverSocketId, io } from "../socket/socket.js";
 
 // Configure multer storage
@@ -88,9 +89,9 @@ const upload = multer({
     storage: storage,
     fileFilter: function (req, file, cb) {
         // Validate file types (e.g., images, documents)
-        if (file.mimetype.startsWith("image/") || 
-        file.mimetype.startsWith("application/pdf") || 
-        file.mimetype === "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
+        if (file.mimetype.startsWith("image/") ||
+            file.mimetype.startsWith("application/pdf") ||
+            file.mimetype === "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
             cb(null, true);
         } else {
             cb(new Error("Only images and PDF files are allowed"));
@@ -120,6 +121,27 @@ export const sendMessage = async (req, res) => {
             const { message } = req.body;
             const { id: receiverId } = req.params;
             const senderId = req.user._id;
+
+            console.log(senderId, 'senderId', receiverId, 'recieverId');
+
+            const sender = await User.findById({ _id: senderId });
+            const receiver = await User.findById({ _id: receiverId });
+            // console.log(sender, receiver, 'reciever');
+
+            const new_reciever = await User.findByIdAndUpdate({ _id: receiverId }, {
+                lastMessage: message || filename,
+                sender: sender.username,
+                messageSendTime: new Date()
+            }, { new: true });
+
+
+            const new_sender = await User.findByIdAndUpdate({ _id: senderId }, {
+                lastMessage: message || filename,
+                sender: "me",
+                messageSendTime: new Date()
+            }, { new: true });
+
+            console.log(new_reciever, new_sender);
 
             // Find or create conversation
             let conversation = await Conversation.findOne({
@@ -153,6 +175,7 @@ export const sendMessage = async (req, res) => {
             }
 
             res.status(201).json(newMessage);
+
         });
     } catch (error) {
         console.log("Error in sendMessage controller: ", error.message);
